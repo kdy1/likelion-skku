@@ -4,7 +4,7 @@ importers:
 
   .: {}
 
-  4-4-dynamic-metadata:
+  examples/4-4-dynamic-metadata:
     dependencies:
       '@hookform/resolvers':
         specifier: ^3.4.2
