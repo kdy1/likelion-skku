@@ -1,3 +1,4 @@
+import { Movie, getMovie } from "@/lib/db";
 import { Metadata } from "next";
 import { PropsWithChildren } from "react";
 
@@ -6,26 +7,33 @@ export async function generateMetadata({
 }: {
   params: { id: string };
 }): Promise<Metadata> {
+  const movie = await getMovie(id);
+
   return {
     title: {
-      template: `Movie ${id}: %s`,
-      default: `Movie ${id}`,
+      template: `%s - ${movie.title} - Movies`,
+      default: `${movie.title} - Movies`,
     },
   };
 }
 
-export default function MovieLayout({ children }: PropsWithChildren<{}>) {
+export default async function MovieLayout({
+  children,
+  params: { id },
+}: PropsWithChildren<{ params: { id: string } }>) {
+  const movie = await getMovie(id);
+
   return (
     <div>
       <header>
-        <TopView />
+        <TopView movie={movie} />
       </header>
       <main>{children}</main>
     </div>
   );
 }
 
-function TopView() {
+function TopView({ movie }: { movie: Movie }) {
   return (
     <section className="w-full bg-gray-100 dark:bg-gray-800">
       <div className="container grid gap-8 py-12 md:grid-cols-[300px_1fr] md:gap-12 lg:py-16 xl:gap-16">
@@ -41,32 +49,28 @@ function TopView() {
         <div className="space-y-4">
           <div className="space-y-2">
             <h1 className="text-3xl font-bold tracking-tight sm:text-4xl md:text-5xl">
-              The Shawshank Redemption
+              {movie.title}
             </h1>
             <p className="text-lg font-medium text-gray-500 dark:text-gray-400">
-              1994
+              {movie.year}
             </p>
           </div>
           <div className="space-y-4 text-gray-500 dark:text-gray-400">
-            <p>
-              Two imprisoned men bond over a number of years, finding solace and
-              eventual redemption through acts of common decency.
-            </p>
+            <p>{movie.description}</p>
             <div>
               <h2 className="mb-2 text-xl font-bold">Cast</h2>
               <ul className="space-y-1">
-                <li>Tim Robbins</li>
-                <li>Morgan Freeman</li>
-                <li>Bob Gunton</li>
-                <li>William Sadler</li>
+                {movie.casts.map((cast) => (
+                  <li key={cast}>{cast}</li>
+                ))}
               </ul>
             </div>
             <div>
               <h2 className="mb-2 text-xl font-bold">User Ratings</h2>
               <div className="flex items-center gap-2">
                 <StarIcon className="h-5 w-5 fill-primary" />
-                <span className="text-2xl font-bold">9.3</span>
-                <span className="text-sm">(1.2M reviews)</span>
+                <span className="text-2xl font-bold">{movie.rating}</span>
+                <span className="text-sm">({movie.reviewCount} reviews)</span>
               </div>
             </div>
           </div>
