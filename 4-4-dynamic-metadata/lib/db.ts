@@ -14,8 +14,44 @@ const rawStubMovies: Movie[] = [
             "Bob Gunton"
         ],
         rating: 9.3,
-        reviewCount: 100
-    }
+        reviewCount: 100,
+        provider: 'Netflix',
+        similar: ['m2']
+    },
+
+    {
+        id: 'm2',
+        title: 'The Godfather',
+        year: 1972,
+        description: `The aging patriarch of an organized crime dynasty transfers control of his clandestine empire to his reluctant son.`,
+        casts: [
+            "Marlon Brando",
+            "Al Pacino",
+            "James Caan"
+        ],
+        rating: 9.2,
+        reviewCount: 100,
+        provider: 'Netflix',
+        similar: ['m1']
+    },
+
+    {
+        id: 'm3',
+        title: 'The Dark Knight',
+        year: 2008,
+        description: `When the menace known as the Joker wreaks havoc and chaos on the people of Gotham, Batman must accept one of the greatest psychological and physical tests of his ability to fight injustice.`,
+        casts: [
+            "Christian Bale",
+            "Heath Ledger",
+            "Aaron Eckhart"
+        ],
+        rating: 9.0,
+        reviewCount: 100,
+        provider: 'Netflix',
+        similar: []
+    },
+
+
 ];
 
 const stubMovies = Object.fromEntries(rawStubMovies.map((movie) => [movie.id, movie]));
@@ -30,6 +66,9 @@ export interface Movie {
 
     rating: number;
     reviewCount: number;
+
+    provider: string;
+    similar: string[];
 }
 
 export async function getMovie(id: string): Promise<Movie> {

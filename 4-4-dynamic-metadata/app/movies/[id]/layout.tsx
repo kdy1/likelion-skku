@@ -28,7 +28,11 @@ export default async function MovieLayout({
       <header>
         <TopView movie={movie} />
       </header>
-      <main>{children}</main>
+      <div className="container grid gap-8 py-12 md:grid-cols-[300px_1fr] md:gap-12 lg:py-16 xl:gap-16">
+        <div className="mx-auto w-full max-w-[300px] overflow-hidden rounded-xl">
+          <main>{children}</main>
+        </div>
+      </div>
     </div>
   );
 }
@@ -57,14 +61,7 @@ function TopView({ movie }: { movie: Movie }) {
           </div>
           <div className="space-y-4 text-gray-500 dark:text-gray-400">
             <p>{movie.description}</p>
-            <div>
-              <h2 className="mb-2 text-xl font-bold">Cast</h2>
-              <ul className="space-y-1">
-                {movie.casts.map((cast) => (
-                  <li key={cast}>{cast}</li>
-                ))}
-              </ul>
-            </div>
+
             <div>
               <h2 className="mb-2 text-xl font-bold">User Ratings</h2>
               <div className="flex items-center gap-2">
